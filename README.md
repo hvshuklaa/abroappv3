@@ -1,26 +1,18 @@
 # Abrovia — launch package
 
 A static web app (no build step) backed by **Supabase** (auth, Postgres, storage).
-Folder layout:
+Folder layout (all files sit together in the repo root, no sub-folders):
 
 ```
-index.html            landing page      app.html       the app (sign up / log in)
-admin.html            admin console     privacy.html / terms.html
-vercel.json           clean URLs (/app, /login, /admin)
-css/styles.css
-js/config.js          <- you edit this  manifest.webmanifest, robots.txt
-js/db.js              all Supabase calls
-js/core.js            utils, validation, smart onboarding
-js/tools.js           toolkit + coming-soon data
-js/app.js             app screens       js/admin.js    admin screens
-supabase/schema.sql   <- run once in Supabase
-assets/logo.jpg
+index.html (landing)   app.html (the app)   admin.html   privacy.html   terms.html
+styles.css   config.js   db.js   core.js   tools.js   app.js   admin.js
+logo.jpg   manifest.webmanifest   robots.txt   vercel.json   schema.sql
 ```
 
 ## 1. Create the Supabase project (10 minutes)
 1. Go to supabase.com, create a project, and wait for it to finish provisioning.
-2. **SQL Editor > New query**, paste all of `supabase/schema.sql`, click **Run**. It creates tables, security policies, triggers, the private `proofs` storage bucket and the verification functions.
-3. **Project Settings > API**: copy the **Project URL** and the **anon public key** into `js/config.js`. (The anon key is meant to be public. Row Level Security protects the data. Never put the `service_role` key in these files.)
+2. **SQL Editor > New query**, paste all of `schema.sql`, click **Run**. It creates tables, security policies, triggers, the private `proofs` storage bucket and the verification functions.
+3. **Project Settings > API**: copy the **Project URL** and the **anon public key** into `config.js`. (The anon key is meant to be public. Row Level Security protects the data. Never put the `service_role` key in these files.)
 4. **Authentication > URL Configuration**: set **Site URL** to your live address (e.g. `https://abrovia.in`) and add it under **Redirect URLs**. Add `http://localhost:8080` too if you test locally.
 5. **Authentication > Providers > Email**: keep Email enabled. Decide on **Confirm email** (recommended ON for launch; the app handles both).
 6. **Authentication > SMTP Settings**: add a real SMTP provider (Resend, Brevo, Postmark, etc.) before launch. Supabase's built-in mailer is heavily rate-limited and will block signups at scale.
@@ -35,7 +27,7 @@ Open `/admin.html` (or `/admin`) to review Senior applications (including viewin
 ## 3. Deploy
 **How visitors flow:** `abrovia.in` (index.html, landing page) -> every "Start for Free" button opens `app.html` on the **Sign up** tab; every "Log in" button opens `app.html?mode=login`. There are no waitlist forms or Google Forms anymore.
 
-**Vercel + Git:** push this whole folder to your GitHub repo root. In Vercel, Framework Preset = Other, no build command, output directory = root (blank). In Supabase set Site URL to `https://abrovia.in` and add `https://abrovia.in/app.html` to Redirect URLs.
+**Vercel + Git:** push all these files to the root of your GitHub repo (no sub-folders). In Vercel, Framework Preset = Other, no build command, output directory = root (blank). In Supabase set Site URL to `https://abrovia.in` and add `https://abrovia.in/app.html` to Redirect URLs.
 
 Any static host works. Easiest options:
 - **Netlify**: drag the whole folder onto app.netlify.com/drop. Add your domain in Domain settings.
@@ -49,7 +41,7 @@ Then point `abrovia.in` at the host (their dashboard shows the DNS records) and 
 - [ ] In `/admin.html` approve the Senior, then log in as the Senior and answer the question
 - [ ] As the Abrovian, thank the answer
 - [ ] Password reset email arrives and the link returns to the app
-- [ ] Privacy and Terms pages reviewed by a lawyer; confirm the support email in `js/config.js`
+- [ ] Privacy and Terms pages reviewed by a lawyer; confirm the support email in `config.js`
 - [ ] Custom SMTP set up; Supabase **Auth > Rate limits** reviewed
 - [ ] Enable Supabase **daily backups** (Pro plan) before real users arrive
 

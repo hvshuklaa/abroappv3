@@ -3,14 +3,14 @@ let AT = 'apps', AS = 'pending';
 const box = h => { $('#ad').innerHTML = h; };
 const lock = m => { document.body.innerHTML = `<div class="form"><div class="card" style="max-width:480px;text-align:center"><div class="ico" style="margin:0 auto 12px">${ic('shield')}</div><h3>Abrovia admin</h3><p class="mu" style="margin:8px 0 14px">${m}</p><a class="btn" style="text-decoration:none" href="app.html">Go to the app</a></div></div>`; };
 async function bootAdmin() {
-  if (!DB.on) return lock('Configure js/config.js first.');
+  if (!DB.on) return lock('Configure config.js first.');
   const s = await DB.session(); if (!s) return lock('Log in on the main app with your admin account first.');
   const p = await DB.profile(s.user.id); if (!p || !p.is_admin) return lock('This account is not an admin.');
   drawAdmin();
 }
 function drawAdmin() {
   const T = [['apps', 'Verifications'], ['stories', 'Stories'], ['events', 'Events']];
-  $('#root').innerHTML = `<nav class="top"><div class="ti"><img class="lg" src="assets/logo.jpg" alt="Abrovia"><span class="tag">ADMIN</span><a class="btn o s" style="text-decoration:none" href="app.html">Back to app</a></div></nav><main class="main"><div class="hd"><h1>Admin <span class="hw">console</span></h1></div><div class="sub">${T.map(t => `<button class="${AT == t[0] ? 'on' : ''}" onclick="AT='${t[0]}';drawAdmin()">${t[1]}</button>`).join('')}</div><div id="ad"><div class="card sk"></div></div></main>`;
+  $('#root').innerHTML = `<nav class="top"><div class="ti"><img class="lg" src="logo.jpg" alt="Abrovia"><span class="tag">ADMIN</span><a class="btn o s" style="text-decoration:none" href="app.html">Back to app</a></div></nav><main class="main"><div class="hd"><h1>Admin <span class="hw">console</span></h1></div><div class="sub">${T.map(t => `<button class="${AT == t[0] ? 'on' : ''}" onclick="AT='${t[0]}';drawAdmin()">${t[1]}</button>`).join('')}</div><div id="ad"><div class="card sk"></div></div></main>`;
   ({ apps: adApps, stories: adStories, events: adEvents })[AT]().catch(e => box(`<div class="nt e">${esc(nice(e))}</div>`));
 }
 async function adApps() {

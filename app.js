@@ -37,9 +37,9 @@ function render() {
   shell();
 }
 function setup() {
-  $('#root').innerHTML = `<div class="form"><div class="card" style="max-width:620px"><p class="lb">One more step</p><h2 class="ht" style="font-size:30px;margin:6px 0 12px">Connect <span class="hw">Supabase</span></h2><p class="mu" style="margin-bottom:12px">Open <b>js/config.js</b> and paste your Supabase project URL and anon key. Then run <b>supabase/schema.sql</b> in the SQL editor. The README walks through it in a few minutes.</p></div></div>`;
+  $('#root').innerHTML = `<div class="form"><div class="card" style="max-width:620px"><p class="lb">One more step</p><h2 class="ht" style="font-size:30px;margin:6px 0 12px">Connect <span class="hw">Supabase</span></h2><p class="mu" style="margin-bottom:12px">Open <b>config.js</b> and paste your Supabase project URL and anon key. Then run <b>schema.sql</b> in the SQL editor. The README walks through it in a few minutes.</p></div></div>`;
 }
-const TOP = (r) => `<nav class="top"><div class="ti"><a href="${esc(location.pathname)}"><img class="lg" src="assets/logo.jpg" alt="Abrovia"></a>${r || ''}</div></nav>`;
+const TOP = (r) => `<nav class="top"><div class="ti"><a href="${esc(location.pathname)}"><img class="lg" src="logo.jpg" alt="Abrovia"></a>${r || ''}</div></nav>`;
 
 /* ---------- auth ---------- */
 let au = { mode: 'up', accent: COL[0] };
@@ -146,7 +146,7 @@ function shell() {
     : [['home', 'compass', 'Mission'], ['sen', 'users', 'Seniors'], ['qa', 'chat', 'Ask'], ['com', 'globe', 'Community'], ['stories', 'book', 'Stories'], ['tools', 'shield', 'Toolkit'], ['market', 'bag', 'Market'], ['labs', 'spark', 'Labs']];
   if (!it.find(i => i[0] == A.view)) A.view = 'home';
   const vs = A.profile.verification;
-  $('#root').innerHTML = `<nav class="top"><div class="ti"><img class="lg" src="assets/logo.jpg" alt="Abrovia" style="cursor:pointer" onclick="nav('home')"><div class="tabs glass">${it.map(i => `<button class="tab ${A.view == i[0] ? 'on' : ''}" onclick="nav('${i[0]}')">${ic(i[1])}${i[2]}</button>`).join('')}</div>
+  $('#root').innerHTML = `<nav class="top"><div class="ti"><img class="lg" src="logo.jpg" alt="Abrovia" style="cursor:pointer" onclick="nav('home')"><div class="tabs glass">${it.map(i => `<button class="tab ${A.view == i[0] ? 'on' : ''}" onclick="nav('${i[0]}')">${ic(i[1])}${i[2]}</button>`).join('')}</div>
   <button class="chipu" onclick="account()" aria-label="Account">${avt(A.profile.username, A.profile.accent, 32)}<div class="un"><b>${esc(A.profile.username)}</b>${sen ? `<span class="vb">${ic(vs == 'verified' ? 'check' : 'clock')}${vs == 'verified' ? 'Verified' : vs == 'pending' ? 'In review' : 'Not verified'}</span>` : ''}</div></button></div></nav>
   <main class="main">${sen && vs != 'verified' ? vbar() : ''}<div id="v"></div><footer class="foot">© Abrovia · <a href="privacy.html">Privacy</a> · <a href="terms.html">Terms</a> · <a href="mailto:${esc(CFG.contact)}">Contact</a></footer></main>`;
   ({ home: sen ? heroHQ : mission, sen: seniors, qa: sen ? qaSenior : qaAsk, hub, com: community, stories, tools, market, labs })[A.view]();
